@@ -53,16 +53,20 @@ namespace ELESDE
         {
             bool goOn = true;
 
-
             Light[] lightArray = Light.GetLights(LightType.Directional, 0);
             Light mainLight = lightArray[0];
             foreach (Light light in lightArray)
             {
+                if (light.tag == "MainLight")
+                    mainLight = light;
                 Log.Message(String.Format("2Light Name: {0} and Tag: {1}", light.name, light.tag));
 
             }
-            lightArray[0].color = new Color(0f, 1f, 0f, 0.1f);
+            //White
+            mainLight.shadowStrength = 1; //Standard: 0.8
+            mainLight.color = new Color(1f, 1f, 1f, 0.1f);
 
+            //Colors should change slowly later on
             while (goOn)
             {
                 try
@@ -84,13 +88,18 @@ namespace ELESDE
         /// </summary>
         public override void OnLevelUnloading()
         {
+            if (ManageVisualsThread.IsAlive)
+                ManageVisualsThread.Interrupt();
         }
+
         /// <summary>
         /// Thread: Main
         /// Invoked when the extension deinitializes.
         /// </summary>
         public override void OnReleased()
         {
+            if (ManageVisualsThread.IsAlive)
+                ManageVisualsThread.Interrupt();
         }
     }
 }
