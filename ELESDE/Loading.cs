@@ -1,15 +1,15 @@
 ﻿using ICities;
+using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ELESDE
 {
-    class Loading : LoadingExtensionBase
+    public class Loading : LoadingExtensionBase
     {
         //Fields
         private static Thread manageVisualsThread;
@@ -40,6 +40,7 @@ namespace ELESDE
         {
             //if (mode != LoadMode.NewGame)
             //    return;
+            Debug.Log("ABC");
             DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, "abc");
 
             Log.Message("Starting Thread.");
@@ -57,10 +58,10 @@ namespace ELESDE
             Light mainLight = lightArray[0];
             foreach (Light light in lightArray)
             {
-                Log.Message(String.Format("Light Name: {0} and Tag: {1}", light.name, light.tag));
+                Log.Message(String.Format("2Light Name: {0} and Tag: {1}", light.name, light.tag));
 
             }
-            mainLight.color = new Color(0f, 1f, 0f, 0.1f);
+            lightArray[0].color = new Color(0f, 1f, 0f, 0.1f);
 
             while (goOn)
             {
