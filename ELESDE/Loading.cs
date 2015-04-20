@@ -41,7 +41,7 @@ namespace ELESDE
             cem.Light.shadowStrength = 1;
             cem.CyclesPerSecond = 20;
             Log.Message("Starting FlipshitThread Async.");
-            Thread threadToStop = cem.FlipShitAsync();
+            Thread threadToStop = cem.FlipShitInThread();
             threadToStop.Interrupt();
             Log.Message("Started Thread Async.");
         }

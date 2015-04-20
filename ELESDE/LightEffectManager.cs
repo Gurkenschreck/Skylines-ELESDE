@@ -84,6 +84,14 @@ namespace ELESDE
 
 
         //Constructor
+        public LightEffectManager()
+            : this(new Light())
+        {  }
+        public LightEffectManager(Light light)
+        {
+            this.light = light;
+            color = new Color(light.color.a, light.color.g, light.color.b, light.color.a);
+        }
         public LightEffectManager(ref Light light)
         {
             this.light = light;
@@ -179,7 +187,7 @@ namespace ELESDE
         /// Launches FadeColor in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: The thread in which the FadeColor method is executed.</returns>
-        public Thread FadeColorAsync()
+        public Thread FadeColorInThread()
         {
             Log.Message("FadeColorAsync");
             Thread thread = new Thread(FadeColor);
@@ -268,7 +276,7 @@ namespace ELESDE
         /// Launches FadeColorSmooth in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: The thread in which the FadeColorSmooth method is executed.</returns>
-        public Thread FadeColorSmoothAsync()
+        public Thread FadeColorSmoothInThread()
         {
             Log.Message("FadeColorSmoothAsync");
             Thread thread = new Thread(FadeColorSmooth);
@@ -365,7 +373,7 @@ namespace ELESDE
         /// Launches FlipShit in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: THe thread in which the FlipShit method is executed.</returns>
-        public Thread FlipShitAsync()
+        public Thread FlipShitInThread()
         {
             Log.Message("FlipShitAsync");
             Thread thread = new Thread(FlipShit);

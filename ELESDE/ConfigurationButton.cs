@@ -62,15 +62,15 @@ namespace ELESDE
             }
             else if(visualState == VisualState.FadeColor)
             {
-                effectThread = lem.FadeColorAsync();
+                effectThread = lem.FadeColorInThread();
             }
             else if (visualState == VisualState.FadeColorSmooth)
             {
-                effectThread = lem.FadeColorSmoothAsync();
+                effectThread = lem.FadeColorSmoothInThread();
             }
             else if (visualState == VisualState.FlipShit)
             {
-                effectThread = lem.FlipShitAsync();
+                effectThread = lem.FlipShitInThread();
             }
         }
 
