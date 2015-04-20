@@ -12,6 +12,7 @@ namespace ELESDE
     public class LightEffectManager
     {
         //Fields
+        #region Fields and Objects
         Light light;
         Color color;
         public float cyclesPerSecond = 10;
@@ -32,6 +33,7 @@ namespace ELESDE
         bool bUp = true;
         bool aUp = true;
         bool stopAllEffects = false;
+        #endregion
 
         //Properties
         public Light Light
@@ -241,6 +243,9 @@ namespace ELESDE
             return thread;
         }
 
+        /// <summary>
+        /// Randomizes the color values.
+        /// </summary>
         public void FlipShit()
         {
             try
@@ -334,6 +339,5 @@ namespace ELESDE
             thread.Start();
             return thread;
         }
-
     }
 }
