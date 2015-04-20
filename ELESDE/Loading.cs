@@ -39,7 +39,7 @@ namespace ELESDE
             Log.Message("Initialize LightEffectManager");
             cem = new LightEffectManager(ref Light.GetLights(LightType.Directional, 0)[0]);
             cem.Light.shadowStrength = 1;
-            cem.cyclesPerSecond = 20;
+            cem.CyclesPerSecond = 20;
             Log.Message("Starting FlipshitThread Async.");
             Thread threadToStop = cem.FlipShitAsync();
             threadToStop.Interrupt();

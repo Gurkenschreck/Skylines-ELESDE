@@ -15,7 +15,7 @@ namespace ELESDE
         #region Fields and Objects
         Light light;
         Color color;
-        public float cyclesPerSecond = 10;
+        private float cyclesPerSecond = 10;
         float rMax = 1f;
         float gMax = 1f;
         float bMax = 1f;
@@ -56,6 +56,32 @@ namespace ELESDE
             get { return stopAllEffects; }
             set { stopAllEffects = value; }
         }
+        public float CyclesPerSecond
+        {
+            get { return cyclesPerSecond; }
+            set { cyclesPerSecond = value; }
+        }
+        public float RStep
+        {
+            get { return rStep; }
+            set { rStep = value; }
+        }
+        public float GStep
+        {
+            get { return gStep; }
+            set { gStep = value; }
+        }
+        public float BStep
+        {
+            get { return bStep; }
+            set { bStep = value; }
+        }
+        public float AStep
+        {
+            get { return aStep; }
+            set { aStep = value; }
+        }
+
 
         //Constructor
         public LightEffectManager(ref Light light)
@@ -65,6 +91,13 @@ namespace ELESDE
         }
 
         //Methods
+        public void SetSteps(float rStep, float gStep, float bStep, float aStep)
+        {
+            this.RStep = rStep;
+            this.GStep = gStep;
+            this.BStep = bStep;
+            this.AStep = aStep;
+        }
         /// <summary>
         /// Fades the color of the light based on the cycles per second and the min and max values of the colors.
         /// </summary>
@@ -78,62 +111,62 @@ namespace ELESDE
                 {
                     if (rUp)
                     {
-                        if ((color.r + rStep) <= rMax)
-                            color.r += rStep;
+                        if ((color.r + RStep) <= rMax)
+                            color.r += RStep;
                         else
                             rUp = false;
                     }
                     else
                     {
-                        if ((color.r - rStep) >= rMin)
-                            color.r -= rStep;
+                        if ((color.r - RStep) >= rMin)
+                            color.r -= RStep;
                         else
                             rUp = true;
                     }
                     if (gUp)
                     {
-                        if ((color.g + gStep) <= gMax)
-                            color.g += gStep;
+                        if ((color.g + GStep) <= gMax)
+                            color.g += GStep;
                         else
                             gUp = false;
                     }
                     else
                     {
-                        if ((color.g - gStep) >= gMin)
-                            color.g -= gStep;
+                        if ((color.g - GStep) >= gMin)
+                            color.g -= GStep;
                         else
                             gUp = true;
                     }
                     if (bUp)
                     {
-                        if ((color.b + bStep) <= bMax)
-                            color.b += bStep;
+                        if ((color.b + BStep) <= bMax)
+                            color.b += BStep;
                         else
                             bUp = false;
                     }
                     else
                     {
-                        if ((color.b - bStep) >= bMin)
-                            color.b -= bStep;
+                        if ((color.b - BStep) >= bMin)
+                            color.b -= BStep;
                         else
                             bUp = true;
                     }
                     if (aUp)
                     {
-                        if ((color.a + aStep) <= aMax)
-                            color.a += aStep;
+                        if ((color.a + AStep) <= aMax)
+                            color.a += AStep;
                         else
                             aUp = false;
                     }
                     else
                     {
-                        if ((color.a - aStep) >= aMin)
-                            color.a -= aStep;
+                        if ((color.a - AStep) >= aMin)
+                            color.a -= AStep;
                         else
                             aUp = true;
                     }
                     light.color = color;
-                    Thread.Sleep(TimeSpan.FromMilliseconds(1000 / cyclesPerSecond));
+                    Thread.Sleep(TimeSpan.FromMilliseconds(1000 / CyclesPerSecond));
                 }
             }
             catch (Exception ex)
@@ -167,62 +200,62 @@ namespace ELESDE
                 {
                     if (rUp)
                     {
-                        if ((color.r + (rStep / 2)) <= rMax)
-                            color.r += rStep / 2;
+                        if ((color.r + (RStep / 2)) <= rMax)
+                            color.r += RStep / 2;
                         else
                             rUp = false;
                     }
                     else
                     {
-                        if ((color.r - (rStep / 2)) >= rMin)
-                            color.r -= rStep / 2;
+                        if ((color.r - (RStep / 2)) >= rMin)
+                            color.r -= RStep / 2;
                         else
                             rUp = true;
                     }
                     if (gUp)
                     {
-                        if ((color.g + (gStep / 2)) <= gMax)
-                            color.g += gStep / 2;
+                        if ((color.g + (GStep / 2)) <= gMax)
+                            color.g += GStep / 2;
                         else
                             gUp = false;
                     }
                     else
                     {
-                        if ((color.g - (gStep / 2)) >= gMin)
-                            color.g -= gStep / 2;
+                        if ((color.g - (GStep / 2)) >= gMin)
+                            color.g -= GStep / 2;
                         else
                             gUp = true;
                     }
                     if (bUp)
                     {
-                        if ((color.b + (bStep / 2)) <= bMax)
-                            color.b += bStep / 2;
+                        if ((color.b + (BStep / 2)) <= bMax)
+                            color.b += BStep / 2;
                         else
                             bUp = false;
                     }
                     else
                     {
-                        if ((color.b - (bStep / 2)) >= bMin)
-                            color.b -= bStep / 2;
+                        if ((color.b - (BStep / 2)) >= bMin)
+                            color.b -= BStep / 2;
                         else
                             bUp = true;
                     }
                     if (aUp)
                     {
-                        if ((color.a + (aStep / 2)) <= aMax)
-                            color.a += aStep / 2;
+                        if ((color.a + (AStep / 2)) <= aMax)
+                            color.a += AStep / 2;
                         else
                             aUp = false;
                     }
                     else
                     {
-                        if ((color.a - (aStep / 2)) >= aMin)
-                            color.a -= aStep / 2;
+                        if ((color.a - (AStep / 2)) >= aMin)
+                            color.a -= AStep / 2;
                         else
                             aUp = true;
                     }
                     light.color = color;
-                    Thread.Sleep(TimeSpan.FromMilliseconds((1000 / cyclesPerSecond) * 2));
+                    Thread.Sleep(TimeSpan.FromMilliseconds((1000 / CyclesPerSecond) * 2));
                 }
             }
             catch (Exception ex)
@@ -320,7 +353,7 @@ namespace ELESDE
                             aUp = true;
                     }
                     light.color = color;
-                    Thread.Sleep(TimeSpan.FromMilliseconds(1000 / cyclesPerSecond));
+                    Thread.Sleep(TimeSpan.FromMilliseconds(1000 / CyclesPerSecond));
                 }
             }
             catch (Exception ex)

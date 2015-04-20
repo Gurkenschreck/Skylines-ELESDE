@@ -44,7 +44,16 @@ namespace ELESDE
             effectThread.Interrupt();
 
             //Select next VisualState
-            visualState = Next(ref visualState);
+            visualState = Next(visualState);
+
+            //TEST
+            //Sets the visual state to the next level
+            //visualState = (VisualState)Enum.ToObject(typeof(VisualState), ((int)visualState + 1));
+            //OR
+            //visualState = (VisualState)4;
+            //Checks if the visual state is the last one
+            //if ((int)visualState > Enum.GetNames(typeof(VisualState)).Length)
+            //    visualState = VisualState.None;
 
             //Cycle through every option
             if(visualState == VisualState.None)
@@ -63,10 +72,6 @@ namespace ELESDE
             {
                 effectThread = lem.FlipShitAsync();
             }
-
-            //TEST
-            //if ((int)visualState == Enum.GetNames(typeof(VisualState)).Length)
-            //    visualState = VisualState.None;
         }
 
         public override void OnDisable()
@@ -81,7 +86,7 @@ namespace ELESDE
         /// </summary>
         private enum VisualState
         {
-            None = 1,
+            None = 0,
             FadeColor,
             FadeColorSmooth,
             FlipShit
@@ -92,7 +97,7 @@ namespace ELESDE
         /// </summary>
         /// <param name="visualState">VisualState to cycle through.</param>
         /// <returns>Next VisualState state.</returns>
-        private VisualState Next(ref VisualState visualState)
+        public static VisualState Next(this VisualState visualState)
         {
             switch (visualState)
             {
