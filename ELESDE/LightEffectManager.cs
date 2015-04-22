@@ -15,7 +15,7 @@ namespace ELESDE
         #region Fields and Objects
         Light light;
         Color color;
-        private float cyclesPerSecond = 10;
+        private float cyclesPerSecond = 15;
         float rMax = 1f;
         float gMax = 1f;
         float bMax = 1f;
@@ -24,10 +24,14 @@ namespace ELESDE
         float gMin = 0f;
         float bMin = 0f;
         float aMin = 0f;
-        float rStep = 0.020f;
-        float gStep = 0.029f;
+        float rOriginal;
+        float gOriginal;
+        float bOriginal;
+        float aOriginal;
+        float rStep = 0.023f;
+        float gStep = 0.031f;
         float bStep = 0.016f;
-        float aStep = 0.004f;
+        float aStep = 0.006f;
         bool rUp = true;
         bool gUp = true;
         bool bUp = true;
@@ -87,18 +91,52 @@ namespace ELESDE
         public LightEffectManager()
             : this(new Light())
         {  }
+
         public LightEffectManager(Light light)
         {
             this.light = light;
             color = new Color(light.color.a, light.color.g, light.color.b, light.color.a);
+            rOriginal = color.r;
+            gOriginal = color.g;
+            bOriginal = color.b;
+            aOriginal = color.a;
         }
+
         public LightEffectManager(ref Light light)
         {
             this.light = light;
             color = new Color(light.color.a, light.color.g, light.color.b, light.color.a);
+            rOriginal = color.r;
+            gOriginal = color.g;
+            bOriginal = color.b;
+            aOriginal = color.a;
         }
 
         //Methods
+        /// <summary>
+        /// Setss the colors to the native values.
+        /// </summary>
+        public void ResetColors()
+        {
+            light.color = new Color(rOriginal, gOriginal, bOriginal, aOriginal);
+        }
+
+        /// <summary>
+        /// Resets the effects and the colors.
+        /// </summary>
+        public void Reset()
+        {
+            StopAllEffects = true;
+            ResetColors();
+        }
+
+        /// <summary>
+        /// Sets the current steps of the colors.
+        /// </summary>
+        /// <param name="rStep">How the r value should change.</param>
+        /// <param name="gStep">How the g value should change.</param>
+        /// <param name="bStep">How the b value should change.</param>
+        /// <param name="aStep">How the a value should change.</param>
         public void SetSteps(float rStep, float gStep, float bStep, float aStep)
         {
             this.RStep = rStep;
@@ -106,6 +144,7 @@ namespace ELESDE
             this.BStep = bStep;
             this.AStep = aStep;
         }
+
         /// <summary>
         /// Fades the color of the light based on the cycles per second and the min and max values of the colors.
         /// </summary>
@@ -113,9 +152,8 @@ namespace ELESDE
         {
             try
             {
-                Log.Message("FadeColor");
-                StopAllEffects = true;
-                while (StopAllEffects)
+                StopAllEffects = false;
+                while (!StopAllEffects)
                 {
                     if (rUp)
                     {
@@ -189,7 +227,6 @@ namespace ELESDE
         /// <returns>Optional: The thread in which the FadeColor method is executed.</returns>
         public Thread FadeColorInThread()
         {
-            Log.Message("FadeColorAsync");
             Thread thread = new Thread(FadeColor);
             thread.Start();
             return thread;
@@ -202,9 +239,8 @@ namespace ELESDE
         {
             try
             {
-                Log.Message("FadeColor");
-                StopAllEffects = true;
-                while (StopAllEffects)
+                StopAllEffects = false;
+                while (!StopAllEffects)
                 {
                     if (rUp)
                     {
@@ -278,7 +314,6 @@ namespace ELESDE
         /// <returns>Optional: The thread in which the FadeColorSmooth method is executed.</returns>
         public Thread FadeColorSmoothInThread()
         {
-            Log.Message("FadeColorSmoothAsync");
             Thread thread = new Thread(FadeColorSmooth);
             thread.Start();
             return thread;
@@ -287,18 +322,18 @@ namespace ELESDE
         /// <summary>
         /// Randomizes the color values.
         /// </summary>
-        public void FlipShit()
+        public void FlipShit(object obj)
         {
+            bool flipHard = (bool)obj;
             try
             {
-                Log.Message("FlipShit");
                 System.Random rdm = new System.Random();
                 float r;
                 float g;
                 float b;
                 float a;
-                StopAllEffects = true;
-                while (StopAllEffects)
+                StopAllEffects = false;
+                while (!StopAllEffects)
                 {
                     r = (float)rdm.NextDouble();
                     g = (float)rdm.NextDouble();
@@ -361,7 +396,10 @@ namespace ELESDE
                             aUp = true;
                     }
                     light.color = color;
-                    Thread.Sleep(TimeSpan.FromMilliseconds(1000 / CyclesPerSecond));
+                    if (flipHard)
+                        Thread.Sleep(TimeSpan.FromMilliseconds(1000 / (CyclesPerSecond * 2)));
+                    else
+                        Thread.Sleep(TimeSpan.FromMilliseconds(1000 / CyclesPerSecond));
                 }
             }
             catch (Exception ex)
@@ -369,15 +407,25 @@ namespace ELESDE
                 Log.Error("Error FadeColor(): " + ex.ToString());
             }
         }
+
         /// <summary>
         /// Launches FlipShit in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: THe thread in which the FlipShit method is executed.</returns>
         public Thread FlipShitInThread()
         {
-            Log.Message("FlipShitAsync");
-            Thread thread = new Thread(FlipShit);
-            thread.Start();
+            ParameterizedThreadStart pts = new ParameterizedThreadStart(this.FlipShit);
+
+            Thread thread = new Thread(pts);
+            thread.Start(false);
+            return thread;
+        }
+        public Thread FlipShitHardInThread()
+        {
+            ParameterizedThreadStart pts = new ParameterizedThreadStart(this.FlipShit);
+
+            Thread thread = new Thread(pts);
+            thread.Start(true);
             return thread;
         }
     }

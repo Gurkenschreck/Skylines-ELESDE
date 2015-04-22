@@ -20,12 +20,16 @@ namespace ELESDE
         {
             lem = new LightEffectManager(ref Light.GetLights(LightType.Directional, 0)[0]);
             visualState = VisualState.None;
+            UIDragHandle dh = (UIDragHandle)this.AddUIComponent(typeof(UIDragHandle)); //Activates the dragging of the window
 
-            this.text = "DROP";
+
+            //this.text = "DROP";
             this.width = 50;
             this.height = 50;
-            this.relativePosition = new Vector3(20, 50, 0);
+            this.relativePosition = new Vector3(10, 80, 0);
+            this.normalFgSprite = "IconPolicyRecreationalUse";
             this.normalBgSprite = "ButtonMenu";
+            this.pressedFgSprite = "NotificationIconExtremelyHappy";
             this.disabledBgSprite = "ButtonMenuDisabled";
             this.hoveredBgSprite = "ButtonMenuHovered";
             this.focusedBgSprite = "ButtonMenuFocused";
@@ -41,55 +45,22 @@ namespace ELESDE
         void ConfigurationButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
         {
             //At first every effect shall be interrupted
-            effectThread.Interrupt();
+            lem.StopAllEffects = true;
 
             //Select next VisualState
-            visualState = Next(visualState);
-
-            //TEST
-            //Sets the visual state to the next level
-            //visualState = (VisualState)Enum.ToObject(typeof(VisualState), ((int)visualState + 1));
-            //OR
-            //visualState = (VisualState)4;
-            //Checks if the visual state is the last one
-            //if ((int)visualState > Enum.GetNames(typeof(VisualState)).Length)
-            //    visualState = VisualState.None;
-
-            //Cycle through every option
-            if(visualState == VisualState.None)
+            try
             {
-                //Nothing happens
+                visualState = Next(visualState);
             }
-            else if(visualState == VisualState.FadeColor)
+            catch (Exception ex)
             {
-                effectThread = lem.FadeColorInThread();
-            }
-            else if (visualState == VisualState.FadeColorSmooth)
-            {
-                effectThread = lem.FadeColorSmoothInThread();
-            }
-            else if (visualState == VisualState.FlipShit)
-            {
-                effectThread = lem.FlipShitInThread();
+                Log.Error("Next Exception: Message: " + ex.Message + "; Exception: " + ex.ToString());
             }
         }
 
         public override void OnDisable()
         {
-            if (effectThread != null)
-                if (effectThread.IsAlive)
-                    effectThread.Interrupt();
-        }
-
-        /// <summary>
-        /// Represents the current visual state.
-        /// </summary>
-        private enum VisualState
-        {
-            None = 0,
-            FadeColor,
-            FadeColorSmooth,
-            FlipShit
+            lem.Reset();
         }
 
         /// <summary>
@@ -97,17 +68,24 @@ namespace ELESDE
         /// </summary>
         /// <param name="visualState">VisualState to cycle through.</param>
         /// <returns>Next VisualState state.</returns>
-        public static VisualState Next(this VisualState visualState)
+        public VisualState Next(VisualState visualState)
         {
             switch (visualState)
             {
                 case VisualState.None: //
-                    return VisualState.FadeColor;
-                case VisualState.FadeColor:
+                    effectThread = lem.FadeColorSmoothInThread();
                     return VisualState.FadeColorSmooth;
                 case VisualState.FadeColorSmooth:
+                    effectThread = lem.FadeColorInThread();
+                    return VisualState.FadeColor;
+                case VisualState.FadeColor:
+                    effectThread = lem.FlipShitInThread();
                     return VisualState.FlipShit;
                 case VisualState.FlipShit:
+                    effectThread = lem.FlipShitHardInThread();
+                    return VisualState.FlipShitHard;
+                case VisualState.FlipShitHard: //After FlipShitHard go back to normal
+                    lem.Reset();
                     return VisualState.None;
                 default:
                     return VisualState.None;

@@ -12,7 +12,7 @@ namespace ELESDE
     public class Loading : LoadingExtensionBase
     {
         //Fields
-        LightEffectManager cem;
+        UIComponent uiComponent;
 
         //Properties
 
@@ -33,17 +33,12 @@ namespace ELESDE
         /// <param name="mode">Defines what kind of level was just loaded.</param>*
         public override void OnLevelLoaded(LoadMode mode)
         {
-            //if (mode != LoadMode.NewGame)
-            //    return;
+            if (mode == LoadMode.LoadMap || mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset || mode == LoadMode.NewMap)
+                return;
 
-            Log.Message("Initialize LightEffectManager");
-            cem = new LightEffectManager(ref Light.GetLights(LightType.Directional, 0)[0]);
-            cem.Light.shadowStrength = 1;
-            cem.CyclesPerSecond = 20;
-            Log.Message("Starting FlipshitThread Async.");
-            Thread threadToStop = cem.FlipShitInThread();
-            threadToStop.Interrupt();
-            Log.Message("Started Thread Async.");
+            UIView v = UIView.GetAView();
+
+            uiComponent = (UIComponent)v.AddUIComponent(typeof(ConfigurationButton));
         }
 
         /// <summary>
