@@ -19,5 +19,12 @@ namespace ELESDE
         {
             get { return "ELESDE Mod"; }
         }
+
+        private static bool isDebug = false;
+        public static bool IsDebug
+        {
+            get { return isDebug; }
+            set { isDebug = value; }
+        }
     }
 }

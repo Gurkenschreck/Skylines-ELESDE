@@ -13,6 +13,7 @@ namespace ELESDE
     {
         //Fields
         UIComponent uiComponent;
+        UIDragHandle uiDragHandle;
 
         //Properties
 
@@ -36,9 +37,17 @@ namespace ELESDE
             if (mode == LoadMode.LoadMap || mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset || mode == LoadMode.NewMap)
                 return;
 
-            UIView v = UIView.GetAView();
+            try
+            {
+                UIView v = UIView.GetAView() ?? new UIView();
 
-            uiComponent = (UIComponent)v.AddUIComponent(typeof(ConfigurationButton));
+                uiComponent = (UIComponent)v.AddUIComponent(typeof(ConfigurationButton)) ?? v.AddUIComponent(typeof(ConfigurationButton)) as ConfigurationButton;
+                uiDragHandle = (UIDragHandle)uiComponent.AddUIComponent(typeof(UIDragHandle)) ?? (UIDragHandle)uiComponent.AddUIComponent(typeof(UIDragHandle));
+            }
+            catch(Exception ex)
+            {
+                Log.Error("OnLevelLoaded Error: " + ex.ToString());
+            }
         }
 
         /// <summary>
@@ -48,6 +57,14 @@ namespace ELESDE
         /// </summary>
         public override void OnLevelUnloading()
         {
+            if (uiDragHandle != null)
+            {
+                uiComponent.RemoveUIComponent(uiDragHandle);
+                UnityEngine.Object.Destroy(uiDragHandle);
+            }
+            
+            if (uiComponent != null)
+                UnityEngine.Object.Destroy(uiComponent);
         }
 
         /// <summary>

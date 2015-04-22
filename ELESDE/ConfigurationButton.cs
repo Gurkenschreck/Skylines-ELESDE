@@ -15,13 +15,14 @@ namespace ELESDE
         VisualState visualState;
         LightEffectManager lem;
         Thread effectThread;
+        //UIDragHandle dh; //Draghandle
 
         public override void Start()
         {
+            if (ELESDEMod.IsDebug) Log.Message("ConfigurationButton start");
             lem = new LightEffectManager(ref Light.GetLights(LightType.Directional, 0)[0]);
             visualState = VisualState.None;
-            UIDragHandle dh = (UIDragHandle)this.AddUIComponent(typeof(UIDragHandle)); //Activates the dragging of the window
-
+            //dh = (UIDragHandle)this.AddUIComponent(typeof(UIDragHandle)); // ?? this.AddUIComponent(typeof(UIDragHandle)) as UIDragHandle; //Activates the dragging of the window
 
             //this.text = "DROP";
             this.width = 50;
@@ -42,15 +43,34 @@ namespace ELESDE
             this.eventClick += ConfigurationButton_eventClick;
         }
 
+        public override void Update()
+        {
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {   //Shortcut for switching modes is LeftAlt + D
+                if(Input.GetKeyDown(KeyCode.D))
+                    visualState = Next(visualState);
+
+                if (Input.GetKeyDown(KeyCode.M))
+                {   //Enable disable debug
+                    ELESDEMod.IsDebug = !ELESDEMod.IsDebug;
+                    Log.Message("IsDebug enabled: " + ELESDEMod.IsDebug);
+                }
+            }
+        }
+
         void ConfigurationButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
         {
+            if (ELESDEMod.IsDebug) Log.Message("Eventclick");
+
             //At first every effect shall be interrupted
             lem.StopAllEffects = true;
 
             //Select next VisualState
             try
             {
+                if (ELESDEMod.IsDebug) Log.Message("Old visualState: " + visualState);
                 visualState = Next(visualState);
+                if (ELESDEMod.IsDebug) Log.Message("New visualState: " + visualState);
             }
             catch (Exception ex)
             {
@@ -60,6 +80,14 @@ namespace ELESDE
 
         public override void OnDisable()
         {
+            if (ELESDEMod.IsDebug) Log.Message("OnDisable");
+            visualState = VisualState.None;
+
+            //if (dh != null)
+            //    UnityEngine.Object.Destroy(dh);
+
+            //Log.Message((dh != null) ? "dh is not null" : "dh is null");
+
             lem.Reset();
         }
 
