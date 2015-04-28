@@ -163,7 +163,7 @@ namespace ELESDE
             }
             catch (Exception ex)
             {
-                Log.Error("Exception in Reset: " + ex.Message);
+                if (ELESDEMod.IsDebug) Log.Error("Exception in Reset: " + ex.Message);
             }
         }
 
@@ -254,7 +254,7 @@ namespace ELESDE
             }
             catch (Exception ex)
             {
-                Log.Error("Error FadeColor(): " + ex.ToString());
+                if (ELESDEMod.IsDebug) Log.Error("Error FadeColor(): " + ex.ToString());
             }
         }
 
@@ -340,7 +340,7 @@ namespace ELESDE
             }
             catch (Exception ex)
             {
-                Log.Error("Error FadeColor(): " + ex.ToString());
+                if (ELESDEMod.IsDebug) Log.Error("Error FadeColor(): " + ex.ToString());
             }
         }
 
@@ -439,7 +439,7 @@ namespace ELESDE
             }
             catch (Exception ex)
             {
-                Log.Error("Error FadeColor(): " + ex.ToString());
+                if (ELESDEMod.IsDebug) Log.Error("Error FadeColor(): " + ex.ToString());
             }
         }
 

@@ -76,7 +76,7 @@ namespace ELESDE
             }
             catch (Exception ex)
             {
-                Log.Error("Next Exception: Message: " + ex.Message + "; Exception: " + ex.ToString());
+                if (ELESDEMod.IsDebug) Log.Error("Next Exception: Message: " + ex.Message + "; Exception: " + ex.ToString());
             }
         }
 
@@ -87,9 +87,6 @@ namespace ELESDE
 
             if (dh != null)
                 UnityEngine.Object.Destroy(dh);
-
-            //Log.Message((dh != null) ? "dh is not null" : "dh is null");
-
             lem.Reset();
         }
 

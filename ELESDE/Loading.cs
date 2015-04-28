@@ -33,21 +33,17 @@ namespace ELESDE
         /// <param name="mode">Defines what kind of level was just loaded.</param>*
         public override void OnLevelLoaded(LoadMode mode)
         {
-            Log.Message("Loading complete");
             if (mode == LoadMode.LoadMap || mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset || mode == LoadMode.NewMap)
                 return;
 
             try
             {
-                Log.Message("getaview");
                 v = UIView.GetAView();
-                Log.Message("set uicomponent");
                 uiComponent = (UIComponent)v.AddUIComponent(typeof(ConfigurationButton)) ?? v.AddUIComponent(typeof(ConfigurationButton)) as ConfigurationButton;
-                Log.Message("uicomponent set");
             }
             catch(Exception ex)
             {
-                Log.Error("OnLevelLoaded Error: " + ex.ToString());
+                if (ELESDEMod.IsDebug) Log.Error("OnLevelLoaded Error: " + ex.ToString());
             }
         }
 
@@ -58,6 +54,15 @@ namespace ELESDE
         /// </summary>
         public override void OnLevelUnloading()
         {
+            try
+            {
+                if (uiComponent != null)
+                    UnityEngine.Object.Destroy(uiComponent);
+            }
+            catch (Exception ex)
+            {
+                if (ELESDEMod.IsDebug) Log.Error("Trying to release. " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -66,8 +71,15 @@ namespace ELESDE
         /// </summary>
         public override void OnReleased()
         {
-            if (uiComponent != null)
-                UnityEngine.Object.Destroy(uiComponent);
+            try
+            {
+                if (uiComponent != null)
+                    UnityEngine.Object.Destroy(uiComponent);
+            }
+            catch(Exception ex)
+            {
+                if (ELESDEMod.IsDebug) Log.Error("Trying to release. " + ex.Message);
+            }
         }
     }
 }

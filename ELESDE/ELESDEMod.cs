@@ -20,7 +20,7 @@ namespace ELESDE
             get { return "ELESDE Mod"; }
         }
 
-        private static bool isDebug = true;
+        private static bool isDebug = false;
         public static bool IsDebug
         {
             get { return isDebug; }
