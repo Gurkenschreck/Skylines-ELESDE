@@ -56,7 +56,21 @@ namespace ELESDE
             get { return light.color; }
             set { color = value; }
         }
-        public Thread EffectThread { get; set; }
+        public Thread EffectThread 
+        {
+            get { return effectThread; } 
+        }
+        public bool IsThreadRunning 
+        { 
+            get 
+            {
+                if (EffectThread != null)
+                    if (EffectThread.IsAlive)
+                        return true;
+
+                return false;
+            } 
+        }
         public bool StopAllEffects
         {
             get { return stopAllEffects; }
@@ -138,12 +152,19 @@ namespace ELESDE
         /// </summary>
         public void Reset()
         {
-            StopAllEffects = true;
-            ResetColors();
+            try
+            {
+                StopAllEffects = true;
+                ResetColors();
 
-            if(effectThread != null)
-                if (effectThread.IsAlive)
-                    effectThread.Interrupt();
+                //if (effectThread != null)
+                //    if (effectThread.IsAlive)
+                //        effectThread.Interrupt();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Exception in Reset: " + ex.Message);
+            }
         }
 
         /// <summary>

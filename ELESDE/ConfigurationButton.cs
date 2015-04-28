@@ -54,6 +54,9 @@ namespace ELESDE
                     ELESDEMod.IsDebug = !ELESDEMod.IsDebug;
                     Log.Message("IsDebug enabled: " + ELESDEMod.IsDebug);
                 }
+
+                if (Input.GetKeyDown(KeyCode.K))
+                    Log.Message(String.Format("Is thread running: {0}, shall thread stop: {1}", lem.IsThreadRunning, lem.StopAllEffects));
             }
         }
 
