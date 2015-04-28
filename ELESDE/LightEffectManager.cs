@@ -15,6 +15,7 @@ namespace ELESDE
         #region Fields and Objects
         Light light;
         Color color;
+        Thread effectThread;
         private float cyclesPerSecond = 15;
         float rMax = 1f;
         float gMax = 1f;
@@ -55,6 +56,7 @@ namespace ELESDE
             get { return light.color; }
             set { color = value; }
         }
+        public Thread EffectThread { get; set; }
         public bool StopAllEffects
         {
             get { return stopAllEffects; }
@@ -122,12 +124,26 @@ namespace ELESDE
         }
 
         /// <summary>
+        /// Pauses the thread in which the effects are handled.
+        /// </summary>
+        public void PauseEffects()
+        {
+            if (effectThread != null)
+                if (effectThread.IsAlive)
+                    effectThread.Interrupt();
+        }
+
+        /// <summary>
         /// Resets the effects and the colors.
         /// </summary>
         public void Reset()
         {
             StopAllEffects = true;
             ResetColors();
+
+            if(effectThread != null)
+                if (effectThread.IsAlive)
+                    effectThread.Interrupt();
         }
 
         /// <summary>
@@ -225,11 +241,10 @@ namespace ELESDE
         /// Launches FadeColor in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: The thread in which the FadeColor method is executed.</returns>
-        public Thread FadeColorInThread()
+        public void FadeColorInThread()
         {
-            Thread thread = new Thread(FadeColor);
-            thread.Start();
-            return thread;
+            effectThread = new Thread(FadeColor);
+            effectThread.Start();
         }
 
         /// <summary>
@@ -312,11 +327,10 @@ namespace ELESDE
         /// Launches FadeColorSmooth in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: The thread in which the FadeColorSmooth method is executed.</returns>
-        public Thread FadeColorSmoothInThread()
+        public void FadeColorSmoothInThread()
         {
-            Thread thread = new Thread(FadeColorSmooth);
-            thread.Start();
-            return thread;
+            effectThread = new Thread(FadeColorSmooth);
+            effectThread.Start();
         }
 
         /// <summary>
@@ -412,21 +426,19 @@ namespace ELESDE
         /// Launches FlipShit in a separate thread to execute.
         /// </summary>
         /// <returns>Optional: THe thread in which the FlipShit method is executed.</returns>
-        public Thread FlipShitInThread()
+        public void FlipShitInThread()
         {
             ParameterizedThreadStart pts = new ParameterizedThreadStart(this.FlipShit);
 
-            Thread thread = new Thread(pts);
-            thread.Start(false);
-            return thread;
+            effectThread = new Thread(pts);
+            effectThread.Start(false);
         }
-        public Thread FlipShitHardInThread()
+        public void FlipShitHardInThread()
         {
             ParameterizedThreadStart pts = new ParameterizedThreadStart(this.FlipShit);
 
-            Thread thread = new Thread(pts);
-            thread.Start(true);
-            return thread;
+            effectThread = new Thread(pts);
+            effectThread.Start(true);
         }
     }
 }

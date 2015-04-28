@@ -14,15 +14,14 @@ namespace ELESDE
         //Fields
         VisualState visualState;
         LightEffectManager lem;
-        Thread effectThread;
-        //UIDragHandle dh; //Draghandle
+        UIDragHandle dh; //Draghandle
 
         public override void Start()
         {
             if (ELESDEMod.IsDebug) Log.Message("ConfigurationButton start");
             lem = new LightEffectManager(ref Light.GetLights(LightType.Directional, 0)[0]);
             visualState = VisualState.None;
-            //dh = (UIDragHandle)this.AddUIComponent(typeof(UIDragHandle)); // ?? this.AddUIComponent(typeof(UIDragHandle)) as UIDragHandle; //Activates the dragging of the window
+            dh = (UIDragHandle)this.AddUIComponent(typeof(UIDragHandle)); // ?? this.AddUIComponent(typeof(UIDragHandle)) as UIDragHandle; //Activates the dragging of the window
 
             //this.text = "DROP";
             this.width = 50;
@@ -83,8 +82,8 @@ namespace ELESDE
             if (ELESDEMod.IsDebug) Log.Message("OnDisable");
             visualState = VisualState.None;
 
-            //if (dh != null)
-            //    UnityEngine.Object.Destroy(dh);
+            if (dh != null)
+                UnityEngine.Object.Destroy(dh);
 
             //Log.Message((dh != null) ? "dh is not null" : "dh is null");
 
@@ -101,16 +100,16 @@ namespace ELESDE
             switch (visualState)
             {
                 case VisualState.None: //
-                    effectThread = lem.FadeColorSmoothInThread();
+                    lem.FadeColorSmoothInThread();
                     return VisualState.FadeColorSmooth;
                 case VisualState.FadeColorSmooth:
-                    effectThread = lem.FadeColorInThread();
+                    lem.FadeColorInThread();
                     return VisualState.FadeColor;
                 case VisualState.FadeColor:
-                    effectThread = lem.FlipShitInThread();
+                    lem.FlipShitInThread();
                     return VisualState.FlipShit;
                 case VisualState.FlipShit:
-                    effectThread = lem.FlipShitHardInThread();
+                    lem.FlipShitHardInThread();
                     return VisualState.FlipShitHard;
                 case VisualState.FlipShitHard: //After FlipShitHard go back to normal
                     lem.Reset();
