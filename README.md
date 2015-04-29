@@ -8,7 +8,7 @@ There are currently 5 different modes:
 * FlipSh*t / randomize the colors 
 * FlipSh*tHarder / like FlipSh*t, but faster 
 
-I am currently planning to add more visual effects in the future: 
+I am currently planning to add more visual and audio effects and some fun stuff in the future: 
 * Effects 
 * Even more effects! 
 
@@ -16,3 +16,5 @@ Shortcuts
 * LeftAlt + D -> change the visual mode 
 * LeftAlt + M -> activates the debug mode / creates a log which can be seen in the console (F7) 
 * LeftAlt + K -> check the status of the effects
+
+You can propose some ideas if you want to!
