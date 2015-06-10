@@ -432,7 +432,7 @@ namespace ELESDE
                     }
                     light.color = color;
                     if (flipHard)
-                        Thread.Sleep(TimeSpan.FromMilliseconds(1000 / (CyclesPerSecond * 2)));
+                        Thread.Sleep(TimeSpan.FromMilliseconds(1000 / (CyclesPerSecond * 1.5f)));
                     else
                         Thread.Sleep(TimeSpan.FromMilliseconds(1000 / CyclesPerSecond));
                 }

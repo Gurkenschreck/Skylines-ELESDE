@@ -108,14 +108,51 @@ namespace ELESDE
         /// <returns>Next VisualState state.</returns>
         public VisualState Next(VisualState visualState)
         {
+            //switch (visualState)
+            //{
+            //    case VisualState.None: //
+            //        lem.FadeColorSmoothInThread();
+            //        return VisualState.FadeColorSmooth;
+            //    case VisualState.FadeColorSmooth:
+            //        lem.FadeColorInThread();
+            //        return VisualState.FadeColor;
+            //    case VisualState.FadeColor:
+            //        lem.FlipShitInThread();
+            //        return VisualState.FlipShit;
+            //    case VisualState.FlipShit:
+            //        lem.FlipShitHardInThread();
+            //        return VisualState.FlipShitHard;
+            //    case VisualState.FlipShitHard:
+            //        // EDIT
+            //        //go = new GameObject("ELESDE ColorPicker", typeof(UICustomControl));
+            //        //go.AddComponent<UIColorField>();
+            //        //UIColorField colorField = go.GetComponent<UIColorField>();
+            //        //colorField.name = "Test Color";
+            //        //colorField.size = new Vector2(400, 400);
+            //        //colorField.selectedColor = this.color;
+            //        //colorField.position = new Vector3(0f, 0f);
+            //        //colorField.pickerPosition = UIColorField.ColorPickerPosition.RightAbove;
+            //        //colorField.eventSelectedColorChanged += colorField_eventSelectedColorChanged;
+            //        //colorField.isVisible = true;
+            //        //colorField.zOrder = 0;
+            //        //Log.Message(colorField.ToString());
+            //        //Log.Message(go.ToString());
+            //        return VisualState.ImagineColor;
+            //    case VisualState.ImagineColor: //After ColorSelection go back to normal
+            //        //if(go != null)
+            //        //    Destroy(go);
+            //        lem.Reset();
+            //        return VisualState.None;
+            //    default:
+            //        return VisualState.None;
+            //}
             switch (visualState)
             {
                 case VisualState.None: //
                     lem.FadeColorSmoothInThread();
                     return VisualState.FadeColorSmooth;
                 case VisualState.FadeColorSmooth:
-                    lem.FadeColorInThread();
-                    return VisualState.FadeColor;
+                    return VisualState.ImagineColor;
                 case VisualState.FadeColor:
                     lem.FlipShitInThread();
                     return VisualState.FlipShit;
@@ -123,26 +160,13 @@ namespace ELESDE
                     lem.FlipShitHardInThread();
                     return VisualState.FlipShitHard;
                 case VisualState.FlipShitHard:
-                    // EDIT
-                    //go = new GameObject("ELESDE ColorPicker", typeof(UICustomControl));
-                    //go.AddComponent<UIColorField>();
-                    //UIColorField colorField = go.GetComponent<UIColorField>();
-                    //colorField.name = "Test Color";
-                    //colorField.size = new Vector2(400, 400);
-                    //colorField.selectedColor = this.color;
-                    //colorField.position = new Vector3(0f, 0f);
-                    //colorField.pickerPosition = UIColorField.ColorPickerPosition.RightAbove;
-                    //colorField.eventSelectedColorChanged += colorField_eventSelectedColorChanged;
-                    //colorField.isVisible = true;
-                    //colorField.zOrder = 0;
-                    //Log.Message(colorField.ToString());
-                    //Log.Message(go.ToString());
-                    return VisualState.ImagineColor;
+                    lem.Reset();
+                    return VisualState.None;
                 case VisualState.ImagineColor: //After ColorSelection go back to normal
                     //if(go != null)
                     //    Destroy(go);
-                    lem.Reset();
-                    return VisualState.None;
+                    lem.FadeColorInThread();
+                    return VisualState.FadeColor;
                 default:
                     return VisualState.None;
             }
