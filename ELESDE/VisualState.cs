@@ -15,6 +15,7 @@ namespace ELESDE
         FadeColorSmooth,
         FadeColor,
         FlipShit,
-        FlipShitHard
+        FlipShitHard,
+        ImagineColor
     }
 }

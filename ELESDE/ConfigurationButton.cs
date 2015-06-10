@@ -46,8 +46,19 @@ namespace ELESDE
         {
             if (Input.GetKey(KeyCode.LeftAlt))
             {   //Shortcut for switching modes is LeftAlt + D
-                if(Input.GetKeyDown(KeyCode.D))
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    lem.StopAllEffects = true;
                     visualState = Next(visualState);
+                }
+
+                //if (Input.GetKeyDown(KeyCode.L))
+                //{
+                //    go = new GameObject("ELESDE ColorPicker", typeof(UICustomControl));
+                //    go.AddComponent<UIColorPicker>();
+                //    UIColorPicker picker = go.GetComponent<UIColorPicker>();
+                //    picker.name = "Picka";
+                //}
 
                 if (Input.GetKeyDown(KeyCode.M))
                 {   //Enable disable debug
@@ -89,7 +100,7 @@ namespace ELESDE
                 UnityEngine.Object.Destroy(dh);
             lem.Reset();
         }
-
+        GameObject go;
         /// <summary>
         /// Cycles through the VisualState enum and returns the next enum in row.
         /// </summary>
@@ -111,12 +122,35 @@ namespace ELESDE
                 case VisualState.FlipShit:
                     lem.FlipShitHardInThread();
                     return VisualState.FlipShitHard;
-                case VisualState.FlipShitHard: //After FlipShitHard go back to normal
+                case VisualState.FlipShitHard:
+                    // EDIT
+                    //go = new GameObject("ELESDE ColorPicker", typeof(UICustomControl));
+                    //go.AddComponent<UIColorField>();
+                    //UIColorField colorField = go.GetComponent<UIColorField>();
+                    //colorField.name = "Test Color";
+                    //colorField.size = new Vector2(400, 400);
+                    //colorField.selectedColor = this.color;
+                    //colorField.position = new Vector3(0f, 0f);
+                    //colorField.pickerPosition = UIColorField.ColorPickerPosition.RightAbove;
+                    //colorField.eventSelectedColorChanged += colorField_eventSelectedColorChanged;
+                    //colorField.isVisible = true;
+                    //colorField.zOrder = 0;
+                    //Log.Message(colorField.ToString());
+                    //Log.Message(go.ToString());
+                    return VisualState.ImagineColor;
+                case VisualState.ImagineColor: //After ColorSelection go back to normal
+                    //if(go != null)
+                    //    Destroy(go);
                     lem.Reset();
                     return VisualState.None;
                 default:
                     return VisualState.None;
             }
+        }
+
+        void colorField_eventSelectedColorChanged(UIComponent component, Color value)
+        {
+            Log.Message("COLORCHANGED");
         }
     }
 }
